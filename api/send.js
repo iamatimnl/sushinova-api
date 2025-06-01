@@ -1,6 +1,6 @@
-export const config = {
-  runtime: 'nodejs'
-};
+import fetch from 'node-fetch';
+
+export const config = { runtime: 'nodejs' };
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -14,8 +14,8 @@ export default async function handler(req, res) {
       return res.status(400).json({ status: 'error', error: 'Missing message content' });
     }
 
-    const botToken = '7509433067:AAGoLc1NVWqmgKGcrRVb3DwMh1o5_v5Fyio';
-    const chatId = '8047420957';
+    const botToken = process.env.TELEGRAM_BOT_TOKEN;
+    const chatId = process.env.TELEGRAM_CHAT_ID;
     const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
     const response = await fetch(telegramUrl, {
@@ -40,3 +40,4 @@ export default async function handler(req, res) {
     return res.status(500).json({ status: 'error', error: err.message });
   }
 }
+
