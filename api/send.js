@@ -1,4 +1,4 @@
-export const config = { runtime: 'nodejs18.x' };
+import fetch from 'node-fetch';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -18,8 +18,13 @@ export default async function handler(req, res) {
 
     const response = await fetch(telegramUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id: chatId, text: message }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: message,
+      }),
     });
 
     const result = await response.json();
@@ -29,9 +34,7 @@ export default async function handler(req, res) {
     }
 
     return res.status(200).json({ status: 'ok', telegram: result });
-
   } catch (err) {
     return res.status(500).json({ status: 'error', error: err.message });
   }
 }
-
